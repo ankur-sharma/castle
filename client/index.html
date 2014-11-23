@@ -1,0 +1,43 @@
+<!doctype html>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+        var socket;
+
+        function start() {
+            socket = io.connect();
+            socket.on('connect', function() {
+                // alert('connected');
+                socket.on('data', function(data) {
+                    document.getElementById("thetext").value = String(data || '');;
+                });
+            });
+            socket.on('disconnect', function() {
+                alert('dsconnected');
+            });
+
+        };
+
+        function getData(message) {
+            var dataReq = {};
+            dataReq.msg = message
+            socket.emit('message', dataReq);
+        }
+        start();
+    </script>
+</head>
+
+<body>
+    <div id="datadiv">
+
+    </div>
+    <form onSubmit="getData(document.getElementById('thetext').value)">
+        <input id="thetext" type="text" name="Messge" />
+        <input type="submit" value="Submit" />
+    </form>
+</body>
+
+</html>
